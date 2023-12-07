@@ -1,24 +1,24 @@
-import { Link, createSearchParams, useNavigate } from "react-router-dom";
-import Button from "src/components/Button";
-
-import path from "src/constants/path";
-import { QueryConfig } from "../../ProductList";
-import { Category } from "src/types/category.type";
-import classNames from "classnames";
-import InputNumber from "src/components/InputNumber";
-import { useForm, Controller } from "react-hook-form";
-import { Schema, schema } from "src/utils/rules";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { NoUnderfinedField } from "src/types/utils.type";
-import RatingStars from "../RatingStars";
-import { omit } from "lodash";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import Button from 'src/components/Button'
+import path from 'src/constants/path'
+import { Category } from 'src/types/category.type'
+import classNames from 'classnames'
+import InputNumber from 'src/components/InputNumber'
+import { useForm, Controller } from 'react-hook-form'
+import { Schema, schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { NoUnderfinedField } from 'src/types/utils.type'
+import RatingStars from '../RatingStars'
+import { omit } from 'lodash'
+import { QueryConfig } from 'src/hooks/useQueryConfig'
 
 interface Props {
-  queryConfig: QueryConfig;
-  categories: Category[];
+  queryConfig: QueryConfig
+  categories: Category[]
 }
 
-type FormData = NoUnderfinedField<Pick<Schema, "price_max" | "price_min">>;
+type FormData = NoUnderfinedField<Pick<Schema, 'price_max' | 'price_min'>>
 
 /* 
 Rule validate
@@ -26,28 +26,28 @@ Nếu có price_min và price_max thì price_max > = price_min
 Còn không thì có price_min thì không có price_max và ngược lại
 */
 
-const priceSchema = schema.pick(["price_min", "price_max"]);
+const priceSchema = schema.pick(['price_min', 'price_max'])
 
 export default function AsideFilter({ queryConfig, categories }: Props) {
-  const { category } = queryConfig;
+  const { category } = queryConfig
   const {
     control,
     handleSubmit,
-    watch,
+    // watch,
     trigger,
     formState: { errors }
   } = useForm<FormData>({
     defaultValues: {
-      price_min: "",
-      price_max: ""
+      price_min: '',
+      price_max: ''
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     resolver: yupResolver(priceSchema) as any,
     shouldFocusError: false
-  });
-  const valueForm = watch();
+  })
+  // const valueForm = watch()
   // console.log(errors);
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const onSumit = handleSubmit((data) => {
     navigate({
@@ -57,21 +57,21 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         price_max: data.price_max,
         price_min: data.price_min
       }).toString()
-    });
-  });
+    })
+  })
   const handleRomoveAll = () => {
     navigate({
       pathname: path.home,
-      search: createSearchParams(omit(queryConfig, ["price_min", "price_max", "rating_filter", "category"])).toString()
-    });
-  };
+      search: createSearchParams(omit(queryConfig, ['price_min', 'price_max', 'rating_filter', 'category'])).toString()
+    })
+  }
 
   return (
     <div className='py-4'>
       <Link
         to={path.home}
-        className={classNames("flex items-center font-bold", {
-          "text-orange": !category
+        className={classNames('flex items-center font-bold', {
+          'text-orange': !category
         })}
       >
         <svg
@@ -93,7 +93,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
       <div className='bg-gray-300 h-[1px] my-4' />
       <ul>
         {categories.map((categoryItem) => {
-          const isActive = category === categoryItem._id;
+          const isActive = category === categoryItem._id
           return (
             <li className='py-2 pl-2' key={categoryItem._id}>
               <Link
@@ -104,8 +104,8 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                     category: categoryItem._id
                   }).toString()
                 }}
-                className={classNames("relative px-2", {
-                  "text-orange font-semibold": isActive
+                className={classNames('relative px-2', {
+                  'text-orange font-semibold': isActive
                 })}
               >
                 {isActive && (
@@ -125,7 +125,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 {categoryItem.name}
               </Link>
             </li>
-          );
+          )
         })}
       </ul>
       <Link to={path.home} className='flex items-center font-bold mt-4 uppercase'>
@@ -163,11 +163,11 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                     classNameError='hidden'
                     {...field}
                     onChange={(event) => {
-                      field.onChange(event);
-                      trigger("price_max");
+                      field.onChange(event)
+                      trigger('price_max')
                     }}
                   />
-                );
+                )
               }}
             />
 
@@ -185,11 +185,11 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                     classNameError='hidden'
                     {...field}
                     onChange={(event) => {
-                      field.onChange(event);
-                      trigger("price_min");
+                      field.onChange(event)
+                      trigger('price_min')
                     }}
                   />
-                );
+                )
               }}
             />
           </div>
@@ -209,5 +209,5 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
         XÓA TẤT CẢ
       </Button>
     </div>
-  );
+  )
 }

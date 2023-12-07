@@ -1,6 +1,6 @@
-import { createSearchParams, useNavigate } from "react-router-dom";
-import path from "src/constants/path";
-import { QueryConfig } from "../../ProductList";
+import { createSearchParams, useNavigate } from 'react-router-dom'
+import path from 'src/constants/path'
+import { QueryConfig } from '../../ProductList'
 /**
  * index: 0 : có 5 cái màu vàng tương ứng với indexStar 0 - 4 đều màu vàng
  * index: 1 : có 4 cái màu vàng tương ứng với indexStar 0 - 3 đều màu vàng
@@ -11,11 +11,11 @@ import { QueryConfig } from "../../ProductList";
  * Chúng ta nhận ra là indexStar < 5 - index => màu vàng
  */
 interface Props {
-  queryConfig: QueryConfig;
+  queryConfig: QueryConfig
 }
 
 export default function RatingStars({ queryConfig }: Props) {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleFilterStar = (rating_filter: number) => {
     navigate({
       pathname: path.home,
@@ -23,8 +23,8 @@ export default function RatingStars({ queryConfig }: Props) {
         ...queryConfig,
         rating_filter: String(rating_filter)
       }).toString()
-    });
-  };
+    })
+  }
   return (
     <ul className='my-3'>
       {Array(5)
@@ -68,7 +68,7 @@ export default function RatingStars({ queryConfig }: Props) {
                           </g>
                         </g>
                       </svg>
-                    );
+                    )
                   return (
                     <svg viewBox='0 0 30 30' className='w-4 h-4 mr-1' key={indexStar}>
                       <defs>
@@ -85,12 +85,12 @@ export default function RatingStars({ queryConfig }: Props) {
                         d='M23.226809 28.390899l-1.543364-9.5505903 6.600997-6.8291523-9.116272-1.4059447-4.01304-8.63019038-4.013041 8.63019038-9.116271 1.4059447 6.600997 6.8291523-1.543364 9.5505903 8.071679-4.5038874 8.071679 4.5038874z'
                       />
                     </svg>
-                  );
+                  )
                 })}
               {index != 0 && <span>Trở lên</span>}
             </div>
           </li>
         ))}
     </ul>
-  );
+  )
 }

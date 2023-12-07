@@ -1,12 +1,29 @@
-import { Link } from 'react-router-dom'
+import { Link, createSearchParams, useNavigate } from 'react-router-dom'
 import Popover from '../Popover'
 import { useMutation } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.contexts'
 import path from 'src/constants/path'
+import useQueryConfig from 'src/hooks/useQueryConfig'
+import { useForm } from 'react-hook-form'
+import { Schema, schema } from 'src/utils/rules'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { omit } from 'lodash'
+
+type FormData = Pick<Schema, 'name'>
+
+const nameSchema = schema.pick(['name'])
 
 export default function Header() {
+  const queryConfig = useQueryConfig()
+  const { register, handleSubmit } = useForm<FormData>({
+    defaultValues: {
+      name: ''
+    },
+    resolver: yupResolver(nameSchema)
+  })
+  const navigate = useNavigate()
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
   const logoutMutation = useMutation({
     mutationFn: authApi.logout,
@@ -14,6 +31,24 @@ export default function Header() {
       setIsAuthenticated(false)
       setProfile(null)
     }
+  })
+  const onSumbitSearch = handleSubmit((data) => {
+    const config = queryConfig.order
+      ? omit(
+          {
+            ...queryConfig,
+            name: data.name
+          },
+          ['order', 'sort_by']
+        )
+      : {
+          ...queryConfig,
+          name: data.name
+        }
+    navigate({
+      pathname: path.home,
+      search: createSearchParams(config).toString()
+    })
   })
 
   const handleLogout = () => {
@@ -141,13 +176,13 @@ export default function Header() {
               <div className='text-center font-semibold text-white]'>FLYER</div>
             </div>
           </Link>
-          <form className='col-span-9'>
+          <form className='col-span-9' onSubmit={onSumbitSearch}>
             <div className='bg-white rounded-sm p-1 flex'>
               <input
                 type='text'
-                name='search'
                 className='text-black px-3 py-2 flex-grow border-none outline-none bg-transparent '
                 placeholder='TÌM KIẾM SẢN PHẨM'
+                {...register('name')}
               />
               <button className='rounded-sm py-2 px-6 flex-shrink-0 bg-[#f58420] hover:opacity-90'>
                 <svg

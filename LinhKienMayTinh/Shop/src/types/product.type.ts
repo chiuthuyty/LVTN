@@ -1,4 +1,6 @@
 export interface Product {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  description: any
   _id: string
   images: string[]
   price: number

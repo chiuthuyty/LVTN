@@ -1,21 +1,21 @@
 export default function ProductRating({
   rating,
-  activeClassname = "w-3 h-3 fill-yellow-300 text-yellow-300",
-  nonActiveClassname = "w-3 h-3 fill-current text-gray-300"
+  activeClassname = 'w-3 h-3 fill-yellow-300 text-yellow-300',
+  nonActiveClassname = 'w-3 h-3 fill-current text-gray-300'
 }: {
-  rating: number;
-  activeClassname?: string;
-  nonActiveClassname?: string;
+  rating: number
+  activeClassname?: string
+  nonActiveClassname?: string
 }) {
   const handleWidth = (order: number) => {
     if (order <= rating) {
-      return "100%";
+      return '100%'
     }
     if (order > rating && order - rating < 1) {
-      return (rating - Math.floor(rating)) * 100 + "%";
+      return (rating - Math.floor(rating)) * 100 + '%'
     }
-    return "0%";
-  };
+    return '0%'
+  }
   return (
     <div className='flex items-center'>
       {Array(5)
@@ -43,5 +43,5 @@ export default function ProductRating({
           </div>
         ))}
     </div>
-  );
+  )
 }

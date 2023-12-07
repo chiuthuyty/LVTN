@@ -45,7 +45,7 @@ class Http {
       },
       function (error: AxiosError) {
         if (error.response?.status != HttpStatusCode.UnprocessableEntity) {
-          //eslint-disable-next-line import/no-named-as-default-member
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const data: any | undefined = error.response?.data
           const message = data.message || error.message
           toast.error(message)
