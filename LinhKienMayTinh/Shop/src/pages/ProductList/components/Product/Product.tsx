@@ -1,15 +1,16 @@
-import { Link } from 'react-router-dom'
-import ProductRating from 'src/components/ProductRating'
-import { Product as ProductType } from 'src/types/product.type'
-import { formatCurrency, formatNumberToSocailStyle } from 'src/utils/utils'
+import { Link } from "react-router-dom";
+import ProductRating from "src/components/ProductRating";
+import path from "src/constants/path";
+import { Product as ProductType } from "src/types/product.type";
+import { formatCurrency, formatNumberToSocailStyle } from "src/utils/utils";
 
 interface Props {
-  product: ProductType
+  product: ProductType;
 }
 
 export default function Product({ product }: Props) {
   return (
-    <Link to='/'>
+    <Link to={`${path.home}${product._id}`}>
       <div className='bg-white shadow rounded-sm hover:translate-y-[-0.4rem] hover:shadow-md duration-100 transition-transform overflow-hidden'>
         <div className='w-full pt-[100%] relative'>
           <img
@@ -40,5 +41,5 @@ export default function Product({ product }: Props) {
         </div>
       </div>
     </Link>
-  )
+  );
 }

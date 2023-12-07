@@ -1,28 +1,29 @@
-import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-import ProductList from './pages/ProductList'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import RegisterLayout from './layouts/RegisterLayout'
-import MainLayout from './layouts/MainLayout'
-import Profile from './pages/Profile'
-import { useContext } from 'react'
-import { AppContext } from './contexts/app.contexts'
-import path from './constants/path'
+import { Navigate, Outlet, useRoutes } from "react-router-dom";
+import ProductList from "./pages/ProductList";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RegisterLayout from "./layouts/RegisterLayout";
+import MainLayout from "./layouts/MainLayout";
+import Profile from "./pages/Profile";
+import { useContext } from "react";
+import { AppContext } from "./contexts/app.contexts";
+import path from "./constants/path";
+import ProductDetail from "./pages/ProductDetail";
 
 function ProtectedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
-  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />
+  const { isAuthenticated } = useContext(AppContext);
+  return isAuthenticated ? <Outlet /> : <Navigate to='/login' />;
 }
 
 function RejectedRoute() {
-  const { isAuthenticated } = useContext(AppContext)
-  return !isAuthenticated ? <Outlet /> : <Navigate to='/' />
+  const { isAuthenticated } = useContext(AppContext);
+  return !isAuthenticated ? <Outlet /> : <Navigate to='/' />;
 }
 
 export default function useRouteElements() {
   const routeElemets = useRoutes([
     {
-      path: '',
+      path: "",
       element: <RejectedRoute />,
       children: [
         {
@@ -44,7 +45,7 @@ export default function useRouteElements() {
       ]
     },
     {
-      path: '',
+      path: "",
       element: <ProtectedRoute />,
       children: [
         {
@@ -58,7 +59,16 @@ export default function useRouteElements() {
       ]
     },
     {
-      path: '/',
+      path: path.productDetail,
+      index: true,
+      element: (
+        <MainLayout>
+          <ProductDetail />
+        </MainLayout>
+      )
+    },
+    {
+      path: "/",
       index: true,
       element: (
         <MainLayout>
@@ -66,6 +76,6 @@ export default function useRouteElements() {
         </MainLayout>
       )
     }
-  ])
-  return routeElemets
+  ]);
+  return routeElemets;
 }
