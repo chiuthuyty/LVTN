@@ -123,7 +123,7 @@ export default function Header() {
             >
               <div className='w-6 h-6 mr-2 flex-shrink-0'>
                 <img
-                  src='https://scontent.fsgn8-3.fna.fbcdn.net/v/t39.30808-6/404928359_1740068686461794_7983949578518368991_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=-8oAC43Q1L4AX8ItszI&_nc_ht=scontent.fsgn8-3.fna&oh=00_AfB7y6EBOe_EAUmFsr9uEi4ozQm2CBt6AOKHx_K0wKw-WQ&oe=6570E728'
+                  src='https://i.pinimg.com/736x/4a/4c/29/4a4c29807499a1a8085e9bde536a570a.jpg'
                   alt='avatar'
                   className='w-full h-full object-cover rounded-full'
                 />

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import {  useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -8,6 +8,8 @@ import { ProductListConfig, Product as ProductType } from 'src/types/product.typ
 import { formatCurrency, formatNumberToSocailStyle, getIdFromNameId, rateSale } from 'src/utils/utils'
 import Product from '../ProductList/components/Product'
 import QuantityController from 'src/components/QuantityController'
+import purchaseApi from 'src/apis/purchase.api'
+
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState(1)
@@ -33,11 +35,11 @@ export default function ProductDetail() {
     queryFn: () => {
       return productApi.getProducts(queryConfig)
     },
-    enabled: Boolean(product),
-    staleTime: 3 * 60 * 1000
+    staleTime: 3 * 60 * 1000,
+    enabled: Boolean(product)
   })
 
-  console.log(productData)
+  const addToCartMutation = useMutation(purchaseApi.addToCart)
 
   useEffect(() => {
     if (product && product.images.length > 0) {
@@ -60,6 +62,8 @@ export default function ProductDetail() {
   const chooseAcitve = (img: string) => {
     setActiveImage(img)
   }
+
+ 
 
   const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -89,6 +93,10 @@ export default function ProductDetail() {
 
   const handleRemoveZoom = () => {
     imageRef.current?.removeAttribute('style')
+  }
+
+  const addToCart = () => {
+    addToCartMutation.mutate({ buy_count: buyCount, product_id: product?._id as string })
   }
 
   if (!product) return null
@@ -192,7 +200,10 @@ export default function ProductDetail() {
                 <div className='ml-6 text-sm text-gray-500'>{product.quantity} sản phẩm có sẳn</div>
               </div>
               <div className='mt-8 flex items-center'>
-                <button className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'>
+                <button
+                  onClick={addToCart}
+                  className='flex h-12 items-center justify-center rounded-sm border border-orange bg-orange/10 px-5 capitalize text-orange shadow-sm hover:bg-orange/5'
+                >
                   <svg
                     enableBackground='new 0 0 15 15'
                     viewBox='0 0 15 15'
