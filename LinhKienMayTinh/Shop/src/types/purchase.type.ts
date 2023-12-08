@@ -9,16 +9,16 @@ import { Product } from './product.type'
 4: sản phẩm đã được giao
 5: sản phẩm đã hủy
 */
-export type PrurchaseStatus = -1 | 1 | 2 | 3 | 4 | 5
-export type PurchaseListStatus = PrurchaseStatus | 0
-export interface Prurchase {
+export type PurchaseStatus = -1 | 1 | 2 | 3 | 4 | 5
+export type PurchaseListStatus = PurchaseStatus | 0
+export interface Purchase {
   _id: string
   buy_count: number
   price: number
   price_before_discount: number
-  status: PrurchaseStatus
+  status: PurchaseStatus
   user: string
   product: Product
   createdAt: string
-  updateAt: string
+  updatedAt: string
 }

@@ -1,4 +1,4 @@
-import {  useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import DOMPurify from 'dompurify'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
@@ -9,7 +9,9 @@ import { formatCurrency, formatNumberToSocailStyle, getIdFromNameId, rateSale } 
 import Product from '../ProductList/components/Product'
 import QuantityController from 'src/components/QuantityController'
 import purchaseApi from 'src/apis/purchase.api'
-
+import { queryClient } from 'src/main'
+import { purchasesStatus } from 'src/constants/purchase'
+import { toast } from 'react-toastify'
 
 export default function ProductDetail() {
   const [buyCount, setBuyCount] = useState(1)
@@ -41,6 +43,18 @@ export default function ProductDetail() {
 
   const addToCartMutation = useMutation(purchaseApi.addToCart)
 
+  const addToCart = () => {
+    addToCartMutation.mutate(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onSuccess: (data) => {
+          toast.success(data.data.message, { autoClose: 1000 })
+          queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+        }
+      }
+    )
+  }
+
   useEffect(() => {
     if (product && product.images.length > 0) {
       setActiveImage(product.images[0])
@@ -62,8 +76,6 @@ export default function ProductDetail() {
   const chooseAcitve = (img: string) => {
     setActiveImage(img)
   }
-
- 
 
   const handleZoom = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     const rect = event.currentTarget.getBoundingClientRect()
@@ -93,10 +105,6 @@ export default function ProductDetail() {
 
   const handleRemoveZoom = () => {
     imageRef.current?.removeAttribute('style')
-  }
-
-  const addToCart = () => {
-    addToCartMutation.mutate({ buy_count: buyCount, product_id: product?._id as string })
   }
 
   if (!product) return null
