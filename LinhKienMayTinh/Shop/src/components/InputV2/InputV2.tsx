@@ -15,7 +15,7 @@ export type InputNumberProps<
 function InputV2<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
->(props: InputNumberProps<TFieldValues,TName>) {
+>(props: InputNumberProps<TFieldValues, TName>) {
   const {
     type,
     onChange,

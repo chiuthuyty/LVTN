@@ -100,8 +100,8 @@ export default function Register() {
               <div className='mt-2'>
                 <Button
                   className='w-full text-center py-4 px-2 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
-                  isLoading={registerAccountMutation.isPending}
-                  disabled={registerAccountMutation.isPending}
+                  isLoading={registerAccountMutation.isLoading}
+                  disabled={registerAccountMutation.isLoading}
                 >
                   Đăng ký
                 </Button>

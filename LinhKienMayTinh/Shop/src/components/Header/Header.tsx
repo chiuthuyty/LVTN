@@ -1,163 +1,36 @@
-import { Link, createSearchParams, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Popover from '../Popover'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import authApi from 'src/apis/auth.api'
+import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
 import { AppContext } from 'src/contexts/app.contexts'
 import path from 'src/constants/path'
-import useQueryConfig from 'src/hooks/useQueryConfig'
-import { useForm } from 'react-hook-form'
-import { Schema, schema } from 'src/utils/rules'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { omit } from 'lodash'
 import { purchasesStatus } from 'src/constants/purchase'
 import purchaseApi from 'src/apis/purchase.api'
 import noproduct from 'src/assets/images/no product.png'
 import { formatCurrency } from 'src/utils/utils'
-type FormData = Pick<Schema, 'name'>
+import NavHeader from '../NavHeader'
+import useSearchProducts from 'src/hooks/useSearchProducts'
 
-const nameSchema = schema.pick(['name'])
 const MAX_PURCHASE = 5
 export default function Header() {
-  const queryConfig = useQueryConfig()
-  const { register, handleSubmit } = useForm<FormData>({
-    defaultValues: {
-      name: ''
-    },
-    resolver: yupResolver(nameSchema)
-  })
-  const navigate = useNavigate()
-  const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
-  const logoutMutation = useMutation({
-    mutationFn: authApi.logout,
-    onSuccess: () => {
-      setIsAuthenticated(false)
-      setProfile(null)
-    }
-  })
-
+  const { isAuthenticated } = useContext(AppContext)
+  const { onSumbitSearch, register } = useSearchProducts()
   //Khi chúng ta chuyển trang thì Header chỉ bị re-render
   //Chứ không bị umout - mouting again
   //(Tất nhiên là trừ trường hợp logout rồi nhảy sang RegisterLayout rồi nhảy vào lại)
   // Nên các query này sẽ không bị inactive => không bị gọi lại => không cần thiết phải set stale: Infinty
   const { data: purchasesInCartData } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
-    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart }),
+    enabled: isAuthenticated
   })
 
   const purchasesInCart = purchasesInCartData?.data.data
 
-  const onSumbitSearch = handleSubmit((data) => {
-    const config = queryConfig.order
-      ? omit(
-          {
-            ...queryConfig,
-            name: data.name
-          },
-          ['order', 'sort_by']
-        )
-      : {
-          ...queryConfig,
-          name: data.name
-        }
-    navigate({
-      pathname: path.home,
-      search: createSearchParams(config).toString()
-    })
-  })
-
-  const handleLogout = () => {
-    logoutMutation.mutate()
-  }
   return (
     <div className='pb-5 pt-2 bg-[#f58420] text-white'>
       <div className='container'>
-        <div className='flex justify-end'>
-          <Popover
-            className='flex item center py-1  hover:text-white/70 cursor-pointer'
-            renderPopover={
-              <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
-                <div className='flex flex-col py-2 pr-28 pl-3'>
-                  <div className='py-3 px-3 hover:text-orange'>Tiếng Việt</div>
-                  <div className='py-3 px-3 hover:text-orange'>English</div>
-                </div>
-              </div>
-            }
-          >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth='1.5'
-              stroke='currentColor'
-              className='w-5 h-5'
-            >
-              <path
-                strokeLinecap='round'
-                strokeLinejoin='round'
-                d='M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418'
-              />
-            </svg>
-            <span className='mx-1'>Tiếng Việt</span>
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              fill='none'
-              viewBox='0 0 24 24'
-              strokeWidth={1.5}
-              stroke='currentColor'
-              className='w-5 h-5'
-            >
-              <path strokeLinecap='round' strokeLinejoin='round' d='M19.5 8.25l-7.5 7.5-7.5-7.5' />
-            </svg>
-          </Popover>
-          {isAuthenticated && (
-            <Popover
-              className='flex item center py-1  hover:text-white/70 cursor-pointer ml-6'
-              renderPopover={
-                <div className='bg-white relative shadow-md rounded-sm border border-gray-200'>
-                  <Link
-                    to={path.profile}
-                    className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
-                  >
-                    Tài khoản của tôi
-                  </Link>
-                  <Link
-                    to='/'
-                    className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
-                  >
-                    Đơn mua
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className='block py-3 px-4 hover:bg-slate-100 bg-white hover:text-cyan-500 w-full text-left'
-                  >
-                    Đăng xuất
-                  </button>
-                </div>
-              }
-            >
-              <div className='w-6 h-6 mr-2 flex-shrink-0'>
-                <img
-                  src='https://i.pinimg.com/736x/4a/4c/29/4a4c29807499a1a8085e9bde536a570a.jpg'
-                  alt='avatar'
-                  className='w-full h-full object-cover rounded-full'
-                />
-              </div>
-              <div>{profile?.email}</div>
-            </Popover>
-          )}
-          {!isAuthenticated && (
-            <div className='flex items-center'>
-              <Link to={path.register} className='mx-3 capitalize hover:text-white/70'>
-                Đăng ký
-              </Link>
-              <div className='border-r-[1px] border-r-white/40 h-4' />
-              <Link to={path.login} className='mx-3 capitalize hover:text-white/70'>
-                Đăng nhập
-              </Link>
-            </div>
-          )}
-        </div>
+        <NavHeader />
 
         <div className='grid grid-cols-12 gap-4 mt-4 items-end'>
           <Link to='/' className='col-span-2'>
@@ -206,7 +79,7 @@ export default function Header() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='h-11'
+                  className='h-6 w-6'
                 >
                   <path
                     strokeLinecap='round'
@@ -220,8 +93,8 @@ export default function Header() {
           <div className='col-span-1 justify-self-end'>
             <Popover
               renderPopover={
-                <div className='bg-white relative shadow-md rounded-sm border border-gray-200 max-w-[400px] text-sm'>
-                  {purchasesInCart ? (
+                <div className='bg-white relative shadow-md rounded-sm border border-gray-200 max-w-[400px] min-w-[300px] text-sm'>
+                  {purchasesInCart && purchasesInCart.length > 0 ? (
                     <div className='p-2'>
                       <div className='text-gray-400 capitalize'>Sản Phẩm Mới Thêm</div>
                       <div className='mt-5'>
@@ -245,16 +118,19 @@ export default function Header() {
                       </div>
                       <div className='flex mt-6 items-center justify-between'>
                         <div className='capitalize text-xs text-gray-500'>
-                          {purchasesInCart.length > MAX_PURCHASE ? purchasesInCart.length - MAX_PURCHASE : ''} Thêm hàng
-                          vào giỏ
+                          {purchasesInCart.length > MAX_PURCHASE ? purchasesInCart.length - MAX_PURCHASE : ''}
+                          Thêm hàng vào giỏ
                         </div>
-                        <button className='capitalize bg-orange hover:bg-opacity-90 px-4 py-2 rounded-sm text-white'>
+                        <Link
+                          to={path.cart}
+                          className='capitalize bg-orange hover:bg-opacity-90 px-4 py-2 rounded-sm text-white'
+                        >
                           Xem giỏ hàng
-                        </button>
+                        </Link>
                       </div>
                     </div>
                   ) : (
-                    <div className='p-2 w-[300px] h-[300px] flex items-center justify-center'>
+                    <div className='p-2 w-[300px] h-[300px] flex items-center justify-center flex-col'>
                       <img src={noproduct} alt='no product' className='h-24 w-24' />
                       <div className='mt-3 capitalize'>Chưa có sản phẩm</div>
                     </div>
@@ -277,9 +153,11 @@ export default function Header() {
                     d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z'
                   />
                 </svg>
-                <span className='absolute top-[-5px] left-[17px] rounded-full px-[9px] py-[1px] text-orange bg-white text-xs'>
-                  {purchasesInCart?.length}
-                </span>
+                {purchasesInCart && purchasesInCart.length > 0 && (
+                  <span className='absolute top-[-5px] left-[17px] rounded-full px-[9px] py-[1px] text-orange bg-white text-xs'>
+                    {purchasesInCart?.length}
+                  </span>
+                )}
               </Link>
             </Popover>
           </div>

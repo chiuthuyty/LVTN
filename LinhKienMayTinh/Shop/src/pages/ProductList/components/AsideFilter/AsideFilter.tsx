@@ -171,7 +171,7 @@ export default function AsideFilter({ queryConfig, categories }: Props) {
                 )
               }}
             />
-            
+
             {/* <InputV2
               control={control}
               name='price_min'
