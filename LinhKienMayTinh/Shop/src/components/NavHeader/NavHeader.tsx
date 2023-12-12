@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 import path from 'src/constants/path'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import authApi from 'src/apis/auth.api'
-
 import { purchasesStatus } from 'src/constants/purchase'
+import { getAvatarUrl } from 'src/utils/utils'
 
 export default function NavHeader() {
   const { setIsAuthenticated, isAuthenticated, setProfile, profile } = useContext(AppContext)
@@ -85,13 +85,9 @@ export default function NavHeader() {
           }
         >
           <div className='w-6 h-6 mr-2 flex-shrink-0'>
-            <img
-              src='https://haycafe.vn/wp-content/uploads/2021/11/Anh-avatar-dep-chat-lam-hinh-dai-dien-600x600.jpg'
-              alt='avatar'
-              className='w-full h-full object-cover rounded-full'
-            />
+            <img src={getAvatarUrl(profile?.avatar)} alt='avatar' className='w-full h-full object-cover rounded-full' />
           </div>
-          <div>{profile?.email}</div>
+          <div>{profile?.name}</div>
         </Popover>
       )}
       {!isAuthenticated && (
