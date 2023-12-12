@@ -48,7 +48,7 @@ class Http {
         if (error.response?.status != HttpStatusCode.UnprocessableEntity) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const data: any | undefined = error.response?.data
-          console.log(data,error)
+          console.log(data, error)
           const message = data?.message || error.message
           toast.error(message)
         }

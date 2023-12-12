@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { InputHTMLAttributes, forwardRef, useState } from 'react'
+import { InputHTMLAttributes, useState } from 'react'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useForm, useController, FieldValues, FieldPath, UseControllerProps } from 'react-hook-form'
+import { useController, FieldValues, FieldPath, UseControllerProps } from 'react-hook-form'
 
 export type InputNumberProps<
   TFieldValues extends FieldValues = FieldValues,

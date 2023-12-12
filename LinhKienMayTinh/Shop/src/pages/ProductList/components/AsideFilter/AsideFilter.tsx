@@ -12,7 +12,6 @@ import { NoUnderfinedField } from 'src/types/utils.type'
 import RatingStars from '../RatingStars'
 import { omit } from 'lodash'
 import { QueryConfig } from 'src/hooks/useQueryConfig'
-import InputV2 from 'src/components/InputV2'
 
 interface Props {
   queryConfig: QueryConfig
