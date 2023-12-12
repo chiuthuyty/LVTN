@@ -2,7 +2,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation } from '@tanstack/react-query'
-import { omit } from 'lodash'
+//Không có tính năng tree-shaking
+// import  { omit } from 'lodash'
+//chỉ import chỉ mỗi function omit
+import omit from 'lodash/omit'
+
 import { schema, Schema } from 'src/utils/rules'
 import Input from 'src/components/Input'
 import authApi from 'src/apis/auth.api'
@@ -84,6 +88,7 @@ export default function Register() {
                 register={register}
                 type='password'
                 className='mt-2'
+                classNameEye='absolute right-[5px] w-6 h-5 cursor-pointer top-[12px]'
                 errorMessage={errors.password?.message}
                 placeholder='Password'
                 autoComplete='on'
@@ -93,6 +98,7 @@ export default function Register() {
                 register={register}
                 type='password'
                 className='mt-2'
+                classNameEye='absolute right-[5px] w-6 h-5 cursor-pointer top-[12px]'
                 errorMessage={errors.confirm_password?.message}
                 placeholder='Confirm Password'
                 autoComplete='on'

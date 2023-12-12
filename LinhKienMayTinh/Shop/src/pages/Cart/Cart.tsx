@@ -8,8 +8,9 @@ import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import { Purchase } from 'src/types/purchase.type'
 import { formatCurrency, generaNameId } from 'src/utils/utils'
+// eslint-disable-next-line import/no-named-as-default
 import produce from 'immer'
-import { keyBy } from 'lodash'
+import keyBy from 'lodash/keyBy'
 import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.contexts'
 import noproduct from 'src/assets/images/no product.png'
@@ -80,6 +81,7 @@ export default function Cart() {
         }) || []
       )
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [purchasesInCart, choosenPurchaseIdFromLocation])
 
   useEffect(() => {
