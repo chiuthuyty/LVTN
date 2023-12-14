@@ -1,4 +1,4 @@
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { useContext, useMemo } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -7,13 +7,18 @@ import AddressSelector from 'src/components/AddressSelector'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
 import path from 'src/constants/path'
+import { purchasesStatus } from 'src/constants/purchase'
 import { AppContext } from 'src/contexts/app.contexts'
 import { formatCurrency, generaNameId } from 'src/utils/utils'
 
 export default function OrderInformation() {
   const { showPurchases } = useContext(AppContext)
-  const navigate = useNavigate()
   console.log('showPurchases', showPurchases)
+  const navigate = useNavigate()
+  const { refetch } = useQuery({
+    queryKey: ['purchases', { status: purchasesStatus.inCart }],
+    queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
+  })
   const checkedPurchasesCount = showPurchases.length
   const totalCheckedPurchasePrice = useMemo(
     () =>
@@ -26,10 +31,12 @@ export default function OrderInformation() {
   const buyProductsMutation = useMutation({
     mutationFn: purchaseApi.buyProduct,
     onSuccess: (data) => {
+      refetch()
       toast.success(data.data.message, {
         position: 'top-center',
         autoClose: 1000
       })
+      navigate('/')
     }
   })
 
@@ -40,9 +47,6 @@ export default function OrderInformation() {
         buy_count: purchase.buy_count
       }))
       buyProductsMutation.mutate(body)
-      navigate({
-        pathname: path.historyPurchase
-      })
     }
   }
 
