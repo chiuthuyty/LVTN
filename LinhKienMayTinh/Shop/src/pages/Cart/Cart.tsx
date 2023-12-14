@@ -16,7 +16,7 @@ import { AppContext } from 'src/contexts/app.contexts'
 import noproduct from 'src/assets/images/no product.png'
 
 export default function Cart() {
-  const { extendedPurchases, setExtendedPurchases } = useContext(AppContext)
+  const { extendedPurchases, setExtendedPurchases, setShowPurchasess } = useContext(AppContext)
   const { data: purchasesInCartData, refetch } = useQuery({
     queryKey: ['purchases', { status: purchasesStatus.inCart }],
     queryFn: () => purchaseApi.getPurchases({ status: purchasesStatus.inCart })
@@ -146,6 +146,10 @@ export default function Cart() {
   //     buyProductsMutation.mutate(body)
   //   }
   // }
+
+  const handleBuyPurchases = () => {
+    setShowPurchasess(checkedPurchases)
+  }
 
   return (
     <div className='bg-neutral-100 py-16'>
@@ -300,12 +304,23 @@ export default function Cart() {
                     <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</div>
                   </div>
                 </div>
-                <Link
-                  to={path.orderinfor}
-                  className='sm:ml-4 mt-5 sm:mt-0 h-10 w-52 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
-                >
-                  Đặt hàng
-                </Link>
+
+                {checkedPurchasesCount > 0 ? (
+                  <Link
+                    to={path.orderinfor}
+                    onClick={handleBuyPurchases}
+                    className='sm:ml-4 mt-5 sm:mt-0 h-10 w-52 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
+                  >
+                    Đặt hàng
+                  </Link>
+                ) : (
+                  <Link
+                    to={path.cart}
+                    className='sm:ml-4 mt-5 sm:mt-0 h-10 w-52 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
+                  >
+                    Chưa có sản phẩm
+                  </Link>
+                )}
 
                 {/* <Button
                   onClick={handleBuyPurchases}
