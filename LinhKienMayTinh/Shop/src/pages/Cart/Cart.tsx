@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import purchaseApi from 'src/apis/purchase.api'
-import Button from 'src/components/Button'
+// import Button from 'src/components/Button'
 import QuantityController from 'src/components/QuantityController'
 import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
@@ -11,7 +11,7 @@ import { formatCurrency, generaNameId } from 'src/utils/utils'
 // eslint-disable-next-line import/no-named-as-default
 import produce from 'immer'
 import keyBy from 'lodash/keyBy'
-import { toast } from 'react-toastify'
+// import { toast } from 'react-toastify'
 import { AppContext } from 'src/contexts/app.contexts'
 import noproduct from 'src/assets/images/no product.png'
 
@@ -28,16 +28,16 @@ export default function Cart() {
     }
   })
 
-  const buyProductsMutation = useMutation({
-    mutationFn: purchaseApi.buyProduct,
-    onSuccess: (data) => {
-      refetch()
-      toast.success(data.data.message, {
-        position: 'top-center',
-        autoClose: 1000
-      })
-    }
-  })
+  // const buyProductsMutation = useMutation({
+  //   mutationFn: purchaseApi.buyProduct,
+  //   onSuccess: (data) => {
+  //     refetch()
+  //     toast.success(data.data.message, {
+  //       position: 'top-center',
+  //       autoClose: 1000
+  //     })
+  //   }
+  // })
 
   const deleteProductsMutation = useMutation({
     mutationFn: purchaseApi.deletePuchase,
@@ -137,15 +137,16 @@ export default function Cart() {
     deleteProductsMutation.mutate(purchasesIds)
   }
 
-  const handleBuyPurchases = () => {
-    if (checkedPurchases.length > 0) {
-      const body = checkedPurchases.map((purchase) => ({
-        product_id: purchase.product._id,
-        buy_count: purchase.buy_count
-      }))
-      buyProductsMutation.mutate(body)
-    }
-  }
+  // const handleBuyPurchases = () => {
+  //   if (checkedPurchases.length > 0) {
+  //     const body = checkedPurchases.map((purchase) => ({
+  //       product_id: purchase.product._id,
+  //       buy_count: purchase.buy_count
+  //     }))
+  //     buyProductsMutation.mutate(body)
+  //   }
+  // }
+
   return (
     <div className='bg-neutral-100 py-16'>
       <div className='container'>
@@ -299,13 +300,20 @@ export default function Cart() {
                     <div className='ml-6 text-orange'>₫{formatCurrency(totalCheckedPurchaseSavingPrice)}</div>
                   </div>
                 </div>
-                <Button
+                <Link
+                  to={path.orderinfor}
+                  className='sm:ml-4 mt-5 sm:mt-0 h-10 w-52 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
+                >
+                  Đặt hàng
+                </Link>
+
+                {/* <Button
                   onClick={handleBuyPurchases}
                   disabled={buyProductsMutation.isLoading}
                   className='sm:ml-4 mt-5 sm:mt-0 h-10 w-52 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
                 >
                   Mua hàng
-                </Button>
+                </Button> */}
               </div>
             </div>
           </>

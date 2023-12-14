@@ -11,7 +11,6 @@ import {
   setProfileToLS,
   setRefreshTokenToLS
 } from './auth'
-import path from 'src/constants/path'
 import config from 'src/constants/config'
 import { URL_LOGIN, URL_LOGOUT, URL_REFRESH_TOKEN, URL_REGISTER } from 'src/apis/auth.api'
 import { isAxiosExpiredTokenError, isAxiosUnauthorizedError } from './utils'
@@ -38,8 +37,8 @@ class Http {
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
-        'expire-access-token': 5, //10 s
-        'expire-refresh-token': 60 * 60 //1 giờ
+        'expire-access-token': 60 * 60, //1 gio
+        'expire-refresh-token': 60 * 60 * 24 //2 giờ
       }
     })
     this.instance.interceptors.request.use(

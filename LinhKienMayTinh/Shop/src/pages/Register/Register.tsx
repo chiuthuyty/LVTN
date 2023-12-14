@@ -23,7 +23,6 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-
     setError,
     formState: { errors }
   } = useForm<FormData>({

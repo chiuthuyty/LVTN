@@ -1,31 +1,32 @@
 import { Navigate, Outlet, useRoutes } from 'react-router-dom'
-// import ProductList from './pages/ProductList'
-// import Login from './pages/Login'
-// import Register from './pages/Register'
-// import Profile from './pages/User/pages/Profile'
-// import ChangePassword from './pages/User/pages/ChangePassword'
-// import HistoryPurchase from './pages/User/pages/HistoryPurchase'
-// import NotFound from './pages/NotFound'
-// import ProductDetail from './pages/ProductDetail'
-// import Cart from './pages/Cart'
-// import CartLayout from './layouts/CartLayout'
+import ProductList from './pages/ProductList'
+import Login from './pages/Login'
+import Register from './pages/Register'
+import Profile from './pages/User/pages/Profile'
+import ChangePassword from './pages/User/pages/ChangePassword'
+import HistoryPurchase from './pages/User/pages/HistoryPurchase'
+import NotFound from './pages/NotFound'
+import ProductDetail from './pages/ProductDetail'
+import Cart from './pages/Cart'
+import CartLayout from './layouts/CartLayout'
 import RegisterLayout from './layouts/RegisterLayout'
 import MainLayout from './layouts/MainLayout'
-import { useContext, lazy, Suspense } from 'react'
+import { useContext } from 'react'
 import { AppContext } from './contexts/app.contexts'
 import path from './constants/path'
 import UserLayout from './pages/User/layouts/UserLayout'
+import OrderInformation from './pages/OrderInformation'
 
-const Login = lazy(() => import('./pages/Login'))
-const ProductList = lazy(() => import('./pages/ProductList'))
-const Profile = lazy(() => import('./pages/User/pages/Profile'))
-const Register = lazy(() => import('./pages/Register'))
-const ProductDetail = lazy(() => import('./pages/ProductDetail'))
-const Cart = lazy(() => import('./pages/Cart'))
-const CartLayout = lazy(() => import('./layouts/CartLayout'))
-const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword'))
-const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase'))
-const NotFound = lazy(() => import('./pages/NotFound'))
+// const Login = lazy(() => import('./pages/Login'))
+// const ProductList = lazy(() => import('./pages/ProductList'))
+// const Profile = lazy(() => import('./pages/User/pages/Profile'))
+// const Register = lazy(() => import('./pages/Register'))
+// const ProductDetail = lazy(() => import('./pages/ProductDetail'))
+// const Cart = lazy(() => import('./pages/Cart'))
+// const CartLayout = lazy(() => import('./layouts/CartLayout'))
+// const ChangePassword = lazy(() => import('./pages/User/pages/ChangePassword'))
+// const HistoryPurchase = lazy(() => import('./pages/User/pages/HistoryPurchase'))
+// const NotFound = lazy(() => import('./pages/NotFound'))
 
 function ProtectedRoute() {
   const { isAuthenticated } = useContext(AppContext)
@@ -47,9 +48,7 @@ export default function useRouteElements() {
           path: path.login,
           element: (
             <RegisterLayout>
-              <Suspense>
-                <Login />
-              </Suspense>
+              <Login />
             </RegisterLayout>
           )
         },
@@ -57,9 +56,7 @@ export default function useRouteElements() {
           path: path.register,
           element: (
             <RegisterLayout>
-              <Suspense>
-                <Register />
-              </Suspense>
+              <Register />
             </RegisterLayout>
           )
         }
@@ -73,9 +70,15 @@ export default function useRouteElements() {
           path: path.cart,
           element: (
             <CartLayout>
-              <Suspense>
-                <Cart />
-              </Suspense>
+              <Cart />
+            </CartLayout>
+          )
+        },
+        {
+          path: path.orderinfor,
+          element: (
+            <CartLayout>
+              <OrderInformation />
             </CartLayout>
           )
         },
@@ -89,27 +92,15 @@ export default function useRouteElements() {
           children: [
             {
               path: path.profile,
-              element: (
-                <Suspense>
-                  <Profile />
-                </Suspense>
-              )
+              element: <Profile />
             },
             {
               path: path.changePassword,
-              element: (
-                <Suspense>
-                  <ChangePassword />
-                </Suspense>
-              )
+              element: <ChangePassword />
             },
             {
               path: path.historyPurchase,
-              element: (
-                <Suspense>
-                  <HistoryPurchase />
-                </Suspense>
-              )
+              element: <HistoryPurchase />
             }
           ]
         }
@@ -120,9 +111,7 @@ export default function useRouteElements() {
       index: true,
       element: (
         <MainLayout>
-          <Suspense>
-            <ProductDetail />
-          </Suspense>
+          <ProductDetail />
         </MainLayout>
       )
     },
@@ -131,9 +120,7 @@ export default function useRouteElements() {
       index: true,
       element: (
         <MainLayout>
-          <Suspense>
-            <ProductList />
-          </Suspense>
+          <ProductList />
         </MainLayout>
       )
     },
@@ -141,9 +128,7 @@ export default function useRouteElements() {
       path: '*',
       element: (
         <MainLayout>
-          <Suspense>
-            <NotFound />
-          </Suspense>
+          <NotFound />
         </MainLayout>
       )
     }
