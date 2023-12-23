@@ -93,7 +93,7 @@ export default function ChangePassword() {
             </div>
           </div>
           <div className='mt-2 flex flex-wrap flex-col sm:flex-row'>
-            <div className='sm:w-[20%] truncate pt-3 sm:text-right capitalize'>Địa chỉ</div>
+            <div className='sm:w-[20%] truncate pt-3 sm:text-right capitalize'>Nhập lại mật khẩu</div>
             <div className='sm:w-[80%] sm:pl-5'>
               <Input
                 classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border:gray-500 focus:shadow-sm'

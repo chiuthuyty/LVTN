@@ -1,6 +1,6 @@
 export default function ProductReviews() {
   return (
-    <div className='bg-white mt-2 py-5'>
+    <div className='bg-white mt-2 py-5 '>
       <div className='container'>
         <div className='font-semibold text-3xl mb-4'>Quản lý đánh giá sản phẩm</div>
         <div className='flex items-center p-4'>
