@@ -36,7 +36,7 @@ export default function OrderInformation() {
         position: 'top-center',
         autoClose: 1000
       })
-      navigate('/')
+      navigate(path.historyPurchase)
     }
   })
 
