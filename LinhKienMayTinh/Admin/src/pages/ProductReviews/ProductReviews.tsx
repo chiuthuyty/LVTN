@@ -55,7 +55,7 @@ export default function ProductReviews() {
               <div className='flex flex-shrink-0 items-center justify-center pr-3'>
                 <input type='checkbox' className='h-5 w-5 accent-orange' />
               </div>
-              <div className='flex-grow text-black'>Tên khách hàng</div>
+              <div className='flex-grow text-black'>Khách hàng</div>
             </div>
           </div>
           <div className='col-span-10'>
@@ -153,7 +153,6 @@ export default function ProductReviews() {
                 <div className='col-span-1'>24-1-2024</div>
               </div>
             </div>
-            
           </div>
         </div>
       </div>

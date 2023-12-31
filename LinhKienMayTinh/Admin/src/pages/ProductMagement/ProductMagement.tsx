@@ -24,7 +24,6 @@ export default function ProductManagement() {
             </button>
           </div>
         </div>
-
         <div className='grid grid-cols-9 bg-gray-200 text-center font-bold py-2'>
           <div className='col-span-1'>Tên sản phẩm</div>
           <div className='col-span-1'>Giá</div>
@@ -36,7 +35,6 @@ export default function ProductManagement() {
           <div className='col-span-1'>Danh mục</div>
           <div className='col-span-1'>Hành động</div>
         </div>
-
         <div className='grid grid-cols-9 bg-white text-center py-2 border-b border-gray-300'>
           <div className='col-span-1 pt-2'>Itel i5</div>
           <div className='col-span-1 pt-2'>đ100.000</div>
