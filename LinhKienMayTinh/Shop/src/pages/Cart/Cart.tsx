@@ -311,7 +311,7 @@ export default function Cart() {
                     onClick={handleBuyPurchases}
                     className='sm:ml-4 mt-5 sm:mt-0 h-10 w-52 uppercase bg-red-500 text-white text-sm hover:bg-red-600 flex justify-center items-center'
                   >
-                    Đặt hàng
+                    Mua hàng
                   </Link>
                 ) : (
                   <Link

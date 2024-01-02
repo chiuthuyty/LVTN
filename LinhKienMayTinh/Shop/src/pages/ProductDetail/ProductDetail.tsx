@@ -12,6 +12,7 @@ import purchaseApi from 'src/apis/purchase.api'
 import { purchasesStatus } from 'src/constants/purchase'
 import { toast } from 'react-toastify'
 import path from 'src/constants/path'
+import HttpStatusCode from 'src/constants/httpStatusCode.enum'
 
 export default function ProductDetail() {
   const queryClient = useQueryClient()
@@ -107,13 +108,27 @@ export default function ProductDetail() {
             autoClose: 1000
           })
           queryClient.invalidateQueries({ queryKey: ['purchases', { status: purchasesStatus.inCart }] })
+        },
+        onError: () => {
+          if (HttpStatusCode.Unauthorized) {
+            navigate(path.login)
+          }
         }
       }
     )
   }
 
   const buyNow = async () => {
-    const res = await addToCartMutation.mutateAsync({ product_id: product?._id as string, buy_count: buyCount })
+    const res = await addToCartMutation.mutateAsync(
+      { product_id: product?._id as string, buy_count: buyCount },
+      {
+        onError: () => {
+          if (HttpStatusCode.Unauthorized) {
+            navigate(path.login)
+          }
+        }
+      }
+    )
     const purchase = res.data.data
     navigate(path.cart, {
       state: {

@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import axios from 'axios'
-import Input from '../Input'
+
 
 interface City {
   Id: string
@@ -114,13 +114,6 @@ const AddressSelector: React.FC = () => {
             </select>
           </div>
         </div>
-      </div>
-      <div className='sm:pl-5 mt-4'>
-        <Input
-          classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border:gray-500 focus:shadow-sm'
-          name='address'
-          placeholder='Số nhà và tên đường '
-        />
       </div>
     </div>
   )

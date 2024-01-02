@@ -110,6 +110,7 @@ export const userSchema = yup.object({
   new_password: schema.fields['password'] as yup.StringSchema<string | undefined, yup.AnyObject, undefined, ''>,
   confirm_password: handleConfirmPasswordYup('new_password')
 })
+
 export type UserSchema = yup.InferType<typeof userSchema>
 
 export type Schema = yup.InferType<typeof schema>

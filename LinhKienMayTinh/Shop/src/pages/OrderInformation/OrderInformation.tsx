@@ -1,16 +1,23 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useContext, useMemo } from 'react'
+import { useContext, useEffect, useMemo } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import purchaseApi from 'src/apis/purchase.api'
+import userApi from 'src/apis/user.api'
 import AddressSelector from 'src/components/AddressSelector'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
+import InputNumber from 'src/components/InputNumber'
 import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import { AppContext } from 'src/contexts/app.contexts'
+import { UserSchema, userSchema } from 'src/utils/rules'
 import { formatCurrency, generaNameId } from 'src/utils/utils'
 
+const proflieSchema = userSchema.pick(['name', 'address', 'phone'])
+type FormData = Pick<UserSchema, 'name' | 'address' | 'phone'>
 export default function OrderInformation() {
   const { showPurchases } = useContext(AppContext)
   console.log('showPurchases', showPurchases)
@@ -49,6 +56,33 @@ export default function OrderInformation() {
       buyProductsMutation.mutate(body)
     }
   }
+  const methods = useForm<FormData>({
+    defaultValues: {
+      name: '',
+      phone: '',
+      address: ''
+    },
+    resolver: yupResolver(proflieSchema)
+  })
+
+  const { data: profileData } = useQuery({
+    queryKey: ['profile'],
+    queryFn: userApi.getProfile
+  })
+  const profile = profileData?.data.data
+  const {
+    register,
+    control,
+    formState: { errors },
+    setValue
+  } = methods
+  useEffect(() => {
+    if (profile) {
+      setValue('name', profile.name)
+      setValue('phone', profile.phone)
+      setValue('address', profile.address)
+    }
+  }, [profile, setValue])
 
   return (
     <div className='bg-neutral-100 py-10'>
@@ -58,13 +92,13 @@ export default function OrderInformation() {
             <div className='px-7 font-semibold'> Thông tin khách</div>
             <div className='px-7'>
               <AddressSelector />
-            </div>
-            <div className='px-7'>
-              <div className='sm:w-[100%] sm:pl-5'>
+              <div className='sm:pl-5 mt-4'>
                 <Input
                   classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border:gray-500 focus:shadow-sm'
+                  register={register}
                   name='address'
-                  placeholder='Họ và tên'
+                  placeholder='Số nhà và tên đường '
+                  errorMessage={errors.address?.message}
                 />
               </div>
             </div>
@@ -72,8 +106,27 @@ export default function OrderInformation() {
               <div className='sm:w-[100%] sm:pl-5'>
                 <Input
                   classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border:gray-500 focus:shadow-sm'
-                  name='address'
-                  placeholder='Số điện thoại'
+                  register={register}
+                  name='name'
+                  placeholder='Họ và tên'
+                  errorMessage={errors.name?.message}
+                />
+              </div>
+            </div>
+            <div className='px-7'>
+              <div className='sm:w-[100%] sm:pl-5'>
+                <Controller
+                  control={control}
+                  name='phone'
+                  render={({ field }) => (
+                    <InputNumber
+                      classNameInput='w-full rounded-sm border border-gray-300 px-3 py-2 outline-none focus:border:gray-500 focus:shadow-sm'
+                      placeholder='Số điện thoại'
+                      errorMessage={errors.phone?.message}
+                      {...field}
+                      onChange={field.onChange}
+                    />
+                  )}
                 />
               </div>
             </div>
