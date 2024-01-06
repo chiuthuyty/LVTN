@@ -1,11 +1,11 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { useContext, useEffect, useMemo } from 'react'
+import { useContext, useMemo } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import purchaseApi from 'src/apis/purchase.api'
-import userApi from 'src/apis/user.api'
+
 import AddressSelector from 'src/components/AddressSelector'
 import Button from 'src/components/Button'
 import Input from 'src/components/Input'
@@ -13,11 +13,11 @@ import InputNumber from 'src/components/InputNumber'
 import path from 'src/constants/path'
 import { purchasesStatus } from 'src/constants/purchase'
 import { AppContext } from 'src/contexts/app.contexts'
-import { UserSchema, userSchema } from 'src/utils/rules'
+import { OderSchema, oderSchema } from 'src/utils/rules'
 import { formatCurrency, generaNameId } from 'src/utils/utils'
 
-const proflieSchema = userSchema.pick(['name', 'address', 'phone'])
-type FormData = Pick<UserSchema, 'name' | 'address' | 'phone'>
+const buySchema = oderSchema.pick(['name', 'address', 'phone'])
+type FormData = Pick<OderSchema, 'name' | 'address' | 'phone'>
 export default function OrderInformation() {
   const { showPurchases } = useContext(AppContext)
   console.log('showPurchases', showPurchases)
@@ -47,47 +47,33 @@ export default function OrderInformation() {
     }
   })
 
-  const handleBuyPurchases = () => {
-    if (showPurchases.length > 0) {
-      const body = showPurchases.map((purchase) => ({
-        product_id: purchase.product._id,
-        buy_count: purchase.buy_count
-      }))
-      buyProductsMutation.mutate(body)
-    }
-  }
-  const methods = useForm<FormData>({
-    defaultValues: {
-      name: '',
-      phone: '',
-      address: ''
-    },
-    resolver: yupResolver(proflieSchema)
-  })
+  // const handleBuyPurchases = () => {
+  //   if (showPurchases.length > 0) {
+  //     const body = showPurchases.map((purchase) => ({
+  //       product_id: purchase.product._id,
+  //       buy_count: purchase.buy_count
+  //     }))
+  //     buyProductsMutation.mutate(body)
+  //   }
+  // }
 
-  const { data: profileData } = useQuery({
-    queryKey: ['profile'],
-    queryFn: userApi.getProfile
-  })
-  const profile = profileData?.data.data
   const {
     register,
     control,
     formState: { errors },
-    setValue
-  } = methods
-  useEffect(() => {
-    if (profile) {
-      setValue('name', profile.name)
-      setValue('phone', profile.phone)
-      setValue('address', profile.address)
-    }
-  }, [profile, setValue])
+    handleSubmit
+  } = useForm<FormData>({
+    resolver: yupResolver(buySchema)
+  })
+
+  const onSubmit = handleSubmit(() => {
+    navigate(path.historyPurchase)
+  })
 
   return (
     <div className='bg-neutral-100 py-10'>
       <div className='container'>
-        <div className='grid grid-cols-2 gap-6 md:grid-cols-12'>
+        <form className='grid grid-cols-2 gap-6 md:grid-cols-12' onSubmit={onSubmit}>
           <div className='col-span-6'>
             <div className='px-7 font-semibold'> Thông tin khách</div>
             <div className='px-7'>
@@ -186,7 +172,7 @@ export default function OrderInformation() {
             </div>
             <div className='text-right'>
               <Button
-                onClick={handleBuyPurchases}
+                type='submit'
                 disabled={buyProductsMutation.isLoading}
                 className='bg-red-500 hover:bg-red-600  w-52 h-10 uppercase text-white justify-center items-center'
               >
@@ -194,7 +180,7 @@ export default function OrderInformation() {
               </Button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
   )

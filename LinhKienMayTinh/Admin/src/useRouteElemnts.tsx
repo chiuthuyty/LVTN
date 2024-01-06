@@ -3,13 +3,15 @@ import Login from './pages/Login'
 
 import MainLayout from './layouts/MainLayout'
 import AdminLayout from './layouts/AdminLayout'
-import path from './constants/path'
-import Dashboard from './pages/Dashboard'
+
 import OrderManagement from './pages/OrderManagement/OrderManagement'
 import CategoryMagement from './pages/CategoryMagement'
 import ProductMagement from './pages/ProductMagement'
 import UserMagement from './pages/UserMagement'
 import ProductReviews from './pages/ProductReviews'
+import Statistical from './pages/Statistical'
+import path from './constants/path'
+import DesProduct from './pages/ProductMagement/components/DesProduct'
 
 export default function useRouteElemnts() {
   const useRouteElemnts = useRoutes([
@@ -30,8 +32,8 @@ export default function useRouteElemnts() {
       ),
       children: [
         {
-          path: path.dashboard,
-          element: <Dashboard />
+          path: path.statistical,
+          element: <Statistical />
         },
         {
           path: path.ordermanagement,
@@ -49,9 +51,13 @@ export default function useRouteElemnts() {
           path: path.usermagement,
           element: <UserMagement />
         },
-         {
+        {
           path: path.productreviews,
           element: <ProductReviews />
+        },
+        {
+          path: path.desproduct,
+          element: <DesProduct />
         }
       ]
     }

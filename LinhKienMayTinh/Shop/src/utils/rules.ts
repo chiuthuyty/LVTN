@@ -111,6 +111,12 @@ export const userSchema = yup.object({
   confirm_password: handleConfirmPasswordYup('new_password')
 })
 
-export type UserSchema = yup.InferType<typeof userSchema>
+export const oderSchema = yup.object({
+  name: yup.string().required('Họ và tên là bắt buộc').max(160, 'Độ dài tối đa là 160 ký tự'),
+  phone: yup.string().required('Số điện thoại là bắt buộc').max(20, 'Độ dài tối đa là 20 ký tự'),
+  address: yup.string().required('Số nhà và tên đường là bắt buộc').max(160, 'Độ dài tối đa là 160 ký tự')  
+})
 
+export type UserSchema = yup.InferType<typeof userSchema>
+export type OderSchema = yup.InferType<typeof oderSchema>
 export type Schema = yup.InferType<typeof schema>

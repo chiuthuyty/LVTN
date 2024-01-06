@@ -1,4 +1,14 @@
+import { useQuery } from '@tanstack/react-query'
+import categoryApi from 'src/apis/category.api'
+import CategoryItem from './components/CategoryItem'
+
 export default function CategoryMagement() {
+  const { data: categoriesData } = useQuery({
+    queryKey: ['categories'],
+    queryFn: () => {
+      return categoryApi.getCategoties()
+    }
+  })
   return (
     <div className='bg-white mt-4 py-8'>
       <div className='container mx-auto'>
@@ -12,29 +22,12 @@ export default function CategoryMagement() {
         </div>
 
         <div className='grid grid-cols-3 bg-gray-200 text-center font-bold py-2'>
-          <div>STT</div>
+          <div>Mã</div>
           <div>Tên danh mục</div>
           <div>Hành động</div>
         </div>
 
-        <div className='grid grid-cols-3 bg-gray-100 text-center py-2'>
-          <div className='col-span-1'>1</div>
-          <div className='col-span-1'>RAM</div>
-          <div className='col-span-1'>
-            <div className='flex justify-center space-x-2'>
-              <button className='text-blue-600 hover:underline'>Xóa</button>
-              <button className='text-blue-600 hover:underline'>Sửa</button>
-            </div>
-          </div>
-          <div className='col-span-1'>2</div>
-          <div className='col-span-1'>Bộ nhớ</div>
-          <div className='col-span-1'>
-            <div className='flex justify-center space-x-2'>
-              <button className='text-blue-600 hover:underline'>Xóa</button>
-              <button className='text-blue-600 hover:underline'>Sửa</button>
-            </div>
-          </div>
-        </div>
+        <CategoryItem categories={categoriesData?.data.data || []} />
       </div>
     </div>
   )
