@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+import path from 'src/constants/path'
 import { Category } from 'src/types/category.type'
 
 interface Props {
@@ -14,7 +16,9 @@ export default function CategoryItem({ categories }: Props) {
             <div className='col-span-1'>
               <div className='flex justify-center space-x-2'>
                 <button className='text-blue-600 hover:underline'>Xóa</button>
-                <button className='text-blue-600 hover:underline'>Sửa</button>
+                <Link to={path.editcategory} className='text-blue-600 hover:underline'>
+                  Sửa
+                </Link>
               </div>
             </div>
           </div>

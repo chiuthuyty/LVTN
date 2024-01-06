@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import categoryApi from 'src/apis/category.api'
 import CategoryItem from './components/CategoryItem'
+import { Link } from 'react-router-dom'
+import path from 'src/constants/path'
 
 export default function CategoryMagement() {
   const { data: categoriesData } = useQuery({
@@ -15,9 +17,12 @@ export default function CategoryMagement() {
         <div className='flex justify-between items-center mb-8'>
           <div className='text-3xl font-semibold'>Quản lý danh mục</div>
           <div>
-            <button className='bg-orange text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800'>
+            <Link
+              to={path.addcategory}
+              className='bg-orange text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:shadow-outline-blue active:bg-orange/80'
+            >
               Tạo danh mục
-            </button>
+            </Link>
           </div>
         </div>
 

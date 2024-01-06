@@ -7,7 +7,6 @@ interface Props {
   product: ProductType
 }
 export default function ProductItem({ product }: Props) {
-
   return (
     <div className='grid grid-cols-9 bg-white text-center py-2 border-b border-gray-300'>
       <div className='col-span-1 pt-2 min-h-[2rem] line-clamp-6 text-xs'>{product.name}</div>
@@ -29,7 +28,9 @@ export default function ProductItem({ product }: Props) {
       <div className='col-span-1 pt-2'>
         <div className='flex justify-center items-center space-x-2'>
           <button className='text-red-500'>Xóa</button>
-          <button className='text-blue-500'>Sửa</button>
+          <Link to={path.editproduct} className='text-blue-500'>
+            Sửa
+          </Link>
         </div>
       </div>
     </div>

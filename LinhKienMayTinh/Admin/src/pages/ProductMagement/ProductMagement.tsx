@@ -27,19 +27,26 @@ export default function ProductManagement() {
     keepPreviousData: true,
     staleTime: 3 * 60 * 1000
   })
+
   return (
     <div className='bg-white mt-4 py-8'>
       <div className='container mx-auto'>
         <div className='flex justify-between items-center mb-8'>
           <div className='text-3xl font-semibold'>Quản lý sản phẩm</div>
           <div className='flex items-center space-x-4'>
+            <label htmlFor='category' className='text-gray-600 px-3'>
+              Danh mục:
+            </label>
             <CategorySelect queryConfig={queryConfig} categories={categoriesData?.data.data || []} />
             <Link to={path.productmagement} className='p-2 bg-red-500 rounded-md text-white'>
               Tất cả
             </Link>
-            <button className='bg-orange text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800'>
+            <Link
+              to={path.addproduct}
+              className='bg-orange text-white py-2 px-4 rounded-md hover:bg-orange-600 focus:outline-none focus:shadow-outline-blue active:bg-orange/80'
+            >
               Thêm sản phẩm
-            </button>
+            </Link>
           </div>
         </div>
 

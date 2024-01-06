@@ -12,6 +12,10 @@ import ProductReviews from './pages/ProductReviews'
 import Statistical from './pages/Statistical'
 import path from './constants/path'
 import DesProduct from './pages/ProductMagement/components/DesProduct'
+import ProductAdd from './pages/ProductMagement/pages/ProductAdd'
+import CategoryAdd from './pages/CategoryMagement/pages/CategoryAdd'
+import ProductEdit from './pages/ProductMagement/pages/ProductEdit'
+import CategoryEdit from './pages/CategoryMagement/pages/CategoryEdit'
 
 export default function useRouteElemnts() {
   const useRouteElemnts = useRoutes([
@@ -58,6 +62,22 @@ export default function useRouteElemnts() {
         {
           path: path.desproduct,
           element: <DesProduct />
+        },
+        {
+          path: path.addproduct,
+          element: <ProductAdd />
+        },
+        {
+          path: path.addcategory,
+          element: <CategoryAdd />
+        },
+        {
+          path: path.editproduct,
+          element: <ProductEdit />
+        },
+        {
+          path: path.editcategory,
+          element: <CategoryEdit />
         }
       ]
     }

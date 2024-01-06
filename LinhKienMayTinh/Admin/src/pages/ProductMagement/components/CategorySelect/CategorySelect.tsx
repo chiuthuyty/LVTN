@@ -26,9 +26,6 @@ export default function CategorySelect({ queryConfig, categories }: Props) {
 
   return (
     <div>
-      <label htmlFor='category' className='text-gray-600 px-3'>
-        Danh mục:
-      </label>
       <select
         id='category'
         className='bg-white border border-gray-300 rounded-md p-2 focus:outline-none'
